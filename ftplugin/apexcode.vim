@@ -205,6 +205,17 @@ command! ApexGitInit :call apexUtil#gitInit()
 command! DiffUnderEclipse :ApexCompare
 
 """"""""""""""""""""""""""""""""""""""""""""""""
+" Tooling API commands 
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+if exists("g:apex_tooling_api_enable") && 1 == g:apex_tooling_api_enable
+	command! ApexToolingRefreshFile :call apexTooling#refreshFile(expand("%:p"))
+	command! ApexToolingRefreshProject :call apexTooling#refreshProject(expand("%:p"))
+	command! ApexSaveFile :call apexTooling#saveFile(expand("%:p"))
+	command! ApexSaveModifiedCode :call apexTooling#saveProject(expand("%:p"))
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree plugin settings
 """"""""""""""""""""""""""""""""""""""""""""""""
 " hide -meta.xml files
