@@ -47,7 +47,8 @@ endfunction
 
 function! apexTooling#refreshProject(filePath)
 	let projectPair = apex#getSFDCProjectPathAndName(a:filePath)
-	let responseFilePath = apexTooling#execute("refresh", projectPair.path, projectPair.name, {'tooling.resourcePath': projectPair.path})
+	let srcPath = apex#getApexProjectSrcPath(a:filePath)
+	let responseFilePath = apexTooling#execute("refresh", projectPair.path, projectPair.name, {'tooling.resourcePath': srcPath})
 	" process response results
 	call s:processResponse(responseFilePath)
 endfunction
