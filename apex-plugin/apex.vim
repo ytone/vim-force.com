@@ -176,6 +176,9 @@ function! apex#MakeProject(...)
 			call apexOs#setftime(metaFilePath, projectDescriptor.timeMap[metaFilePath])
 			" show what files we have just deployed
 			"echo metaFilePath
+
+			" refresh tooling session data, if tooling enabled
+			call s:refreshTooling(projectName, projectPath, preparedTempProjectPath)
 		endfor	
 		if 'staged' == l:mode
 			"clear stage cache
@@ -190,6 +193,12 @@ function! apex#MakeProject(...)
 	return result
 endfun
 
+function! s:refreshTooling(projectName, projectPath, antWorkingProjectFolder)
+	if apexTooling#isEnabled()
+		call apexTooling#refreshAfterAnt(a:projectName, a:projectPath, a:antWorkingProjectFolder)
+	endif
+
+endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""
 " ApexDeploy 
 """"""""""""""""""""""""""""""""""""""""""""""""

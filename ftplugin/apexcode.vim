@@ -175,7 +175,7 @@ command! -nargs=* -complete=customlist,apexTest#completeParams ApexTest :call ap
 command! -nargs=* -complete=customlist,ListProjectNames ApexRemoveStaged :call apexDelete#run(<f-args>)
 
 command! -nargs=0 ApexRefreshProject :call apex#refreshProject()
-command! RefreshSFDCProject :ApexRefreshProject
+"command! RefreshSFDCProject :ApexRefreshProject
 command! ApexRefreshFile :call apex#refreshFile(expand("%:p"))
 command! ApexPrintChanged :call apex#printChangedFiles(expand("%:p"))
 command! ApexRetrieve :call apexRetrieve#open(expand("%:p"))
@@ -212,7 +212,9 @@ if exists("g:apex_tooling_api_enable") && 1 == g:apex_tooling_api_enable
 	command! ApexToolingRefreshFile :call apexTooling#refreshFile(expand("%:p"))
 	command! ApexToolingRefreshProject :call apexTooling#refreshProject(expand("%:p"))
 	command! ApexSaveFile :call apexTooling#saveFile(expand("%:p"))
-	command! ApexSaveModifiedCode :call apexTooling#saveProject(expand("%:p"))
+	command! ApexSave :call apexTooling#saveProject(expand("%:p"))
+
+	command! ApexRefreshFile :call apexTooling#refreshFile(expand("%:p"))
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""

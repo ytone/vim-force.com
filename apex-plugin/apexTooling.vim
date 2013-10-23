@@ -18,10 +18,15 @@
 " Part of vim/force.com plugin
 "
 
-if !exists("g:apex_tooling_api_enable") || 0 == g:apex_tooling_api_enable
+if exists("g:loaded_apexTooling") || &compatible
   finish
 endif
-if exists("g:loaded_apexTooling") || &compatible
+
+function! apexTooling#isEnabled()
+	return exists("g:apex_tooling_api_enable") && 1 == g:apex_tooling_api_enable
+
+endfunction
+if !apexTooling#isEnabled()
   finish
 endif
 let g:loaded_apexTooling = 1
@@ -44,11 +49,16 @@ function! s:getToolingCmd()
 	return l:cmd
 
 endfunction	
+function! apexTooling#refreshAfterAnt(projectName, projectFolder, antWorkingProjectFolder)
+	let responseFilePath = apexTooling#execute("refresh", a:projectFolder, a:projectName,
+												\ {'tooling.resourcePath': a:antWorkingProjectFolder, 'ant-action': 'true'})
+	" process response results
+	call s:processResponse(responseFilePath)
+endfunction
 
 function! apexTooling#refreshProject(filePath)
 	let projectPair = apex#getSFDCProjectPathAndName(a:filePath)
-	let srcPath = apex#getApexProjectSrcPath(a:filePath)
-	let responseFilePath = apexTooling#execute("refresh", projectPair.path, projectPair.name, {'tooling.resourcePath': srcPath})
+	let responseFilePath = apexTooling#execute("refresh", projectPair.path, projectPair.name, {'tooling.resourcePath': projectPair.path})
 	" process response results
 	call s:processResponse(responseFilePath)
 endfunction
@@ -62,9 +72,8 @@ endfunction
 
 function! apexTooling#saveProject(filePath)
 	let projectPair = apex#getSFDCProjectPathAndName(a:filePath)
-	let srcPath = apex#getApexProjectSrcPath(a:filePath)
 
-	let responseFilePath = apexTooling#execute("save", projectPair.path, projectPair.name, {'tooling.resourcePath': srcPath})
+	let responseFilePath = apexTooling#execute("save", projectPair.path, projectPair.name, {'tooling.resourcePath': projectPair.path})
 	" process response results
 	call s:processResponse(responseFilePath)
 endfunction
